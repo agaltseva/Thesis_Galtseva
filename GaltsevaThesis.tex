@@ -1,0 +1,396 @@
+\documentclass[12pt, fleqn, unicode]{article}
+\usepackage{Diplo}
+\usepackage{tikz}
+\usepackage{mathtools}
+\usetikzlibrary{shapes,arrows,shadows}
+% \usepackage{subcaption}
+% \usepackage{subfig}
+\usepackage{subcaption}
+
+
+% \usepackage{graphicx}
+%\usepackage{caption}
+%\usepackage{subcaption}
+%\usepackage[cp1251]{inputenc}
+%\usepackage{amssymb,amsmath}
+%\usepackage[russian]{babel}
+%\usepackage{array}
+%\usepackage[ruled,section]{algorithm}
+%\usepackage[noend]{algorithmic}
+%\usepackage[all]{xy}
+%\usepackage{graphicx}
+%\usepackage{indentfirst}
+% \usepackage{bigstrut}
+% \usepackage{float}
+% \DeclareMathOperator*{\argmax}{arg\,max}
+
+%\clubpenalty=10000
+%\widowpenalty=10000
+%% для больших плавающих иллюстраций
+%\renewcommand\topfraction{1.0}
+%\renewcommand\textfraction{0.0}
+%\renewcommand\floatpagefraction{0.01} % float-страниц быть вообще не должно - это чтобы их лучше видеть ;)
+% Воронцов
+% \newcommand\brop[1]{#1\discretionary{}{\hbox{$\mathsurround=0pt #1$}}{}}
+\newcommand{\tsum}{\mathop{\textstyle\sum}\limits}
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\newcommand{\scal}[2]{\left\langle #1,#2 \right\rangle}
+\def\XYtext(#1,#2)#3{\rlap{\kern#1\lower-#2\hbox{#3}}}
+
+\newcommand{\executeiffilenewer}[3]{%
+ \ifnum\pdfstrcmp{\pdffilemoddate{#1}}%
+ {\pdffilemoddate{#2}}>0%
+ {\immediate\write18{#3}}\fi%
+}
+\newcommand{\includesvg}[1]{%
+ \executeiffilenewer{#1.svg}{#1.pdf}%
+ {inkscape -z -D --file=#1.svg %
+ --export-pdf=#1.pdf --export-latex}%
+ \input{#1.pdf_tex}%
+}
+\usepackage{pb-diagram}
+\usepackage{bm}
+
+\graphicspath{ {./fig/} }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Оформление алгоритмов в пакетах algorithm, algorithmic
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % переопределения (русификация) управляющих конструкций:
+% \newcommand{\algKeyword}[1]{{\bf #1}}
+\floatname{algorithm}{Алгоритм}
+\renewcommand{\algorithmicrequire}{\rule{0pt}{2.5ex}{{\bf Вход:}}}
+\renewcommand{\algorithmicensure}{{\bf Выход:}}
+\renewcommand{\algorithmicend}{{\bf конец}}
+\renewcommand{\algorithmicif}{{\bf если}}
+\renewcommand{\algorithmicthen}{{\bf то}}
+\renewcommand{\algorithmicelse}{{\bf иначе}}
+\renewcommand{\algorithmicelsif}{\algorithmicelse\ \algorithmicif}
+\renewcommand{\algorithmicendif}{\algorithmicend\ \algorithmicif}
+\renewcommand{\algorithmicfor}{{\bf для}}
+\renewcommand{\algorithmicforall}{{\bf для всех}}
+\renewcommand{\algorithmicdo}{}
+\renewcommand{\algorithmicendfor}{\algorithmicend\ \algorithmicfor}
+\renewcommand{\algorithmicwhile}{{\bf пока}}
+\renewcommand{\algorithmicendwhile}{\algorithmicend\ \algorithmicwhile}
+\renewcommand{\algorithmicloop}{{\bf цикл}}
+\renewcommand{\algorithmicendloop}{\algorithmicend\ \algorithmicloop}
+\renewcommand{\algorithmicrepeat}{{\bf повторять}}
+\renewcommand{\algorithmicuntil}{{\bf пока}}
+%\renewcommand{\algorithmiccomment}[1]{{\footnotesize // #1}}
+\renewcommand{\algorithmiccomment}[1]{{\quad\sl // #1}}
+
+\newcommand{\bz}{\mathbf{z}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\bw}{\mathbf{w}}
+\newcommand{\bY}{\mathbf{Y}}
+\newcommand{\bX}{\mathbf{X}}
+\newcommand{\ba}{\mathbf{a}}
+\newcommand{\bu}{\mathbf{u}}
+\newcommand{\bt}{\mathbf{t}}
+\newcommand{\bp}{\mathbf{p}}
+\newcommand{\bq}{\mathbf{q}}
+\newcommand{\br}{\mathbf{r}}
+\newcommand{\bg}{\mathbf{g}}
+\newcommand{\bh}{\mathbf{h}}
+\newcommand{\bb}{\mathbf{b}}
+\newcommand{\bv}{\mathbf{v}}
+\newcommand{\be}{\mathbf{e}}
+\newcommand{\bc}{\mathbf{c}}
+\newcommand{\bs}{\mathbf{s}}
+\newcommand{\bP}{\mathbf{P}}
+\newcommand{\bT}{\mathbf{T}}
+\newcommand{\bQ}{\mathbf{Q}}
+\newcommand{\bE}{\mathbf{E}}
+\newcommand{\bF}{\mathbf{F}}
+\newcommand{\bU}{\mathbf{U}}
+\newcommand{\bI}{\mathbf{I}}
+\newcommand{\bB}{\mathbf{B}}
+\newcommand{\bW}{\mathbf{W}}
+\newcommand{\bD}{\mathbf{D}}
+\newcommand{\bH}{\mathbf{H}}
+\newcommand{\bG}{\mathbf{G}}
+\newcommand{\bS}{\mathbf{S}}
+\newcommand{\bZ}{\mathbf{Z}}
+\newcommand{\bJ}{\mathbf{J}}
+\newcommand{\bM}{\mathbf{M}}
+\newcommand{\btheta}{\boldsymbol{\theta}}
+\newcommand{\bmu}{\boldsymbol{\mu}}
+\newcommand{\blambda}{\boldsymbol{\lambda}}
+\newcommand{\bPsi}{\boldsymbol{\Psi}}
+\newcommand{\bchi}{\boldsymbol{\chi}}
+\newcommand{\bsigma}{\boldsymbol{\sigma}}
+\newcommand{\bTheta}{\boldsymbol{\Theta}}
+\newcommand{\bphi}{\boldsymbol{\phi}}
+\newcommand{\bdelta}{\boldsymbol{\delta}}
+
+\newcommand{\T}{^{\text{\tiny\sffamily\upshape\mdseries T}}}
+
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\var}{\mathrm{Var}\;}
+\newcommand{\diam}{\mathrm{diam}\;}
+\newcommand{\conv}{\mathrm{conv}\;}
+\newcommand{\cl}{\mathrm{cl}\;}
+\newcommand{\dist}{\mathbf{dist}}
+\newcommand{\dom}{\mathbf{dom}\;}
+\renewcommand{\sign}{\mathbf{sign}\;}
+\renewcommand{\T}{\intercal}
+\renewcommand{\eps}{\varepsilon}
+
+
+% Fitting braces
+\newcommand{\brs}[1]{\left(#1\right)}
+\newcommand{\sbrs}[1]{\left[#1\right]}
+\newcommand{\fbrs}[1]{\left\{#1\right\}}
+\newcommand{\rbrs}[1]{\left\langle #1 \right\rangle}
+
+\makeatletter
+\newenvironment{sqcases}{%
+  \matrix@check\sqcases\env@sqcases
+}{%
+  \endarray\right.%
+}
+\def\env@sqcases{%
+  \let\@ifnextchar\new@ifnextchar
+  \left\lbrack
+  \def\arraystretch{1.2}%
+  \array{@{}l@{\quad}l@{}}%
+}
+\makeatother
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+
+\begin{document}
+
+{
+\renewcommand{\baselinestretch}{1}
+\thispagestyle{empty}
+\begin{center}
+    \sc
+        Министерство образования и науки Российской Федерации\\
+        Московский физико-технический институт
+        {\rm(государственный университет)}\\
+        Факультет управления и прикладной математики\\
+        Кафедра <<Интеллектуальные системы>>\\
+        при Вычислительном центре им. А. А. Дородницына РАН\\[35mm]
+    \rm\large
+        Гальцева Александра Ивановна\\[10mm]
+    \bf\Large
+    Модели инвариатных и композитных движений в задачах анализа физической активности\\[10mm]
+    \rm\normalsize
+        030401 — Прикладные математика и физика\\[10mm]
+    \sc
+        Выпускная квалификационная работа магистра\\[30mm]
+\end{center}
+\hfill\parbox{80mm}{
+    \begin{flushleft}
+    \bf
+        Научный руководитель:\\
+    \rm
+        д.ф.-м.н. Стрижов Вадим Викторович\\[4.9cm]
+    \end{flushleft}
+}
+\begin{center}
+    Москва\\
+    2020 г.
+\end{center}
+}
+
+\newpage
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\begin{abstract}
+
+
+  \bigskip
+    \textbf{Ключевые слова}: \emph{разложение временных рядов, модели инвариантных движений.}
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Введение}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+За последние годы накоплено много данных, которые описывают физическую активность, акселерометрамми сматрфонов и иными устройтвами
+(фитнес-браслеты, медициское оборудование). Данные представлят собой
+временные ряды. Решается задача классификации видов деятельности человека по измерениям акселерометра. Работа посвящена исследованию проблемы декомпозиции движения на элементарные посредством исследования пространства признаков ЛАМ.
+% [, проверяется гипотеза существования алгоритма декомпозиции суперпозиции элементарных движений.]
+Предполагается, что временной ряд предаставляет собой 1) композицию/суперпозицию или 2)  объединение элементарных движений.
+ Рассмотрены несколько подходов разложения временных рядов: декопмпозиция временного ряда и разложение суммы\произведения движений. В первом случае производится вычисление обратной функции к функции движения (??), а во втором - разделение пространства параметров ЛАМ на подпространства.   
+% Задача декомпозиции движения является подзадачей в процессе классификации движений.
+В работе~\cite{Kuznetsov2015} рассматривается решение задачи классификаци физической активности посредством постоения промежуточного признакового пространства. В этой работе оно будет исследовано. Предполагается, что это пространство с метрикой $\mu$. Также в пространстве параметров ЛАМ определен инвариант физических характеристик испытуемого[/действующего лицо/движущегося объекта.(???)  
+% Это может быть мнимая часть компонентов ряда (в случае отображения ряда в комплексную оласть) или амплитуда располодения параметров ЛАМ в метрическом пространстве.
+Исследование пространства параметров ЛАМ состоит из двух этапов:
+\begin{itemize}
+    \item На первом этапе исследуется пространство параметров ЛАМ: в каком метрическом пространстве оно находится, введена метрика, понятие инварианта движения в данном пространстве.
+    \item На втором этапе производится разложение пространства параметров ЛАМ на подпространства, чтобы показать, что оно есть элементарное движение. Также осуществлена попытка найти алгоритм декомпозиции и разбиения пространтва.
+\end{itemize}
+
+В результате проделанной работы получаем классификатор элементарных движений, который дает возможность решать задачи детектирования, ...
+Таким образом, алгоритм позволяет найти/определить уникальный шаблон для всех движений - инвариант.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Обзор литературы}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Переформулировать и добавить еще обзоров 
+Алгоритм классификации временных рядов по их признаковому описанию а также
+базовые подходы к генерации признаковых описаний в
+ задаче определения типа движения рассмотрены в работе~\cite{Kuznetsov2015}.
+Альтернативный подход к генерации признаковых описаний, основанный на описании
+сегментов оптимальными параметрами аппроксимирующих моделей описан в
+работе~\cite{Karasikov2016}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Постановка задачи декомпозиции временного ряда}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ Введем определения временного ряда, сегмента временного ряда.
+\begin{Def}
+Временной ряд - функция, которая определена на множестве временных меток, отображающая их в $m-$ мерное пространство ($m-$количество используемых датчиков)
+ $$S: T\rightarrow\mathbb{R},\text{где } T=\{t_0, t_0 + d, t_0 + 2d, ...\}$$
+\end{Def}
+Разделим ряд на отрезки - сегменты.
+\begin{Def}
+Сегмент временного ряда:
+$$\boldsymbol{x}_i = [S(t_i), S(t_i - d), ..., S(t_i - (n - 1)d))], \boldsymbol{x}_i \in X\equiv\mathbb{R}^n$$
+\end{Def}
+
+Пусть пространство сегментов $X$ отображается набором функций $\boldsymbol{h} = [\boldsymbol{h}_1, ..., \boldsymbol{h_k}]$ в пространство признаковых описаний $G$.
+ Нужно найти алгоритм $\mathcal{A}$:  1) $\mathcal{A}(G) = \cup_{i} g_i$, или 2) $\mathcal{A}(G) = (\circ, g_i) $. Таким образом, $\mathcal{A}$ определяет биекцию между $X$ и $G$.
+
+% Оптимальные параметры $\boldsymbol{H}(\boldsymbol{x})$ определяются как
+% $$\boldsymbol{h}_i(\boldsymbol{x}) = \arg\min \limits_{\boldsymbol{w} \in \mathbb{R}^{n_g}} \ro(g(\boldsymbol{w}, \boldsymbol{x}), \boldsymbol{x})$$
+% $\boldsymbol{h}_i$ - модель локальной аппроксимации.
+
+%     Выборка: $\mathcal{D} = \{(\boldsymbol{x}_i, y_i)\}^N_{i = 1},~ y_i\in \{1, ..., K\}$\\
+%     $X$ - набор сегментов данных акселерометра,\\
+%     $y$ - метки классов движения,
+
+% \begin{Def}
+%  Моделью локальной аппроксимации $g$ называется модель, аппроксимирующая временной ряд $x(t)$ на отрезке времени $[t, t - \Delta t]$:
+            % $$g: [t, t - \Delta t]\rightarrow \boldsymbol{\hat{x}}$$
+% \end{Def}
+
+
+
+% Метод
+
+
+\subsection{Исследование метрического пространства параметров ЛАМ}
+
+\subsection{Виды отображения движения в метрическое пространство}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Исследование свойств метрического пространства}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{Рассмотрение метрик}
+
+\subsubsection{Метрика_1}
+...
+\subsubsection{Метрика_2}
+
+
+\subsection{Инвариант элементарного движения в метрическом пространстве}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Композитность движения}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\subsection{Декомпозиция движений}
+
+\subsubsection{Разложение Фурье}
+
+\subsubsection{Разложение Хаара-Олина}
+
+% \subsubsection{Отображение в комплексную плоскость}
+\subsection{Разбиение движений}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Сбор и подготовка данных}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Выделение, выравнивание и разметка сегментов}
+
+
+
+\newpage
+\section{Вычислительный эксперимент}
+
+
+
+\newpage
+\section{Выводы}
+
+Удалось показать, что элементарные движения соответствуют подпространствам пространства параметров ЛАМ и найдены способы их выделения. Также найден алгоритм декомпозиции пространства параметров движения .
+% Тут осуществлен переход в область топологических пространств и исследованы метода возврата 
+Проведен численный эксперимент, подверждающий, что выдвинутая гипотеза существования алгоритма декомпозиции временного ряда может быть принята.  
+
+
+\newpage
+\nocite{*}\
+
+\bibliographystyle{unsrt}
+\bibliography{papers.bib}
+
+
+% \subsubsection{Фурье-модель}
+
+% В качестве аппроксимирующей модели сегмента берем обратное дискретное
+% преобразование Фурье,
+% то есть признаковым описанием сегмента является прямое дискретное преобразование
+% Фурье.
+% $$
+%     w_{2j} = \mathrm{Re} \sum_{k=1}^{n} x_k \exp\brs{-\frac{2\pi i}{n}kj}, j=1\ldots n
+% $$
+% $$
+%     w_{2j + 1} = \mathrm{Im} \sum_{k=1}^{n} x_k \exp\brs{-\frac{2\pi i}{n}kj}, j=1\ldots n
+% $$
+% $$
+% w_{\text{FFT}} = \sbrs{w_1\ldots w_{2n}}\in \R^{2n}
+% $$
+
+% В качестве признеакового описания берем $m$ частот из прямого преобразования
+% Фурье с максимальной амплитудой, где $m$ — параметр модели.
+
+
+
+
+\end{document}
